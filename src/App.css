@@ -1,0 +1,27 @@
+.App {
+  text-align: center;
+  background-color: black;
+  color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.word-search {
+  margin-top: 20px;
+}
+
+.list-group-item {
+  text-align: left;
+  background-color: black;
+  color: white;
+  border: 1px solid white;
+}
+
+.form-control {
+  background-color: black;
+  color: white;
+  border: 1px solid white;
+}
