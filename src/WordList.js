@@ -2,14 +2,21 @@ import React from 'react';
 
 const WordList = ({ movies }) => {
   return (
-    <ul className="list-group">
+    <div className="word-list">
       {movies.map((movie, index) => (
-        <li key={index} className="list-group-item">
-          <h5>{movie.title}</h5>
+        <div key={index} className="movie-item">
+          
+          <h3><a
+              href={`https://www.metacritic.com${movie.uri}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            > {movie.title} </a></h3>
           <p>{movie.description}</p>
-        </li>
+          <p>Nota: {movie.avgscore} Ano: {movie.year}</p>
+          <p>https://www.metacritic.com{movie.uri}</p>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 };
 

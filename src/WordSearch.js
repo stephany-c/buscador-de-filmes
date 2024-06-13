@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import axios from 'axios';
+import { debounce } from 'lodash';
 import WordList from './WordList';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
@@ -9,10 +10,7 @@ const WordSearch = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleChange = async (event) => {
-    const query = event.target.value;
-    setSearchTerm(query);
-
+  const fetchMovies = async (query) => {
     if (query.length === 0) {
       setMovies([]);
       setError('');
@@ -24,16 +22,34 @@ const WordSearch = () => {
 
     try {
       const response = await axios.get(`https://movie-search-mayrink-f7a46544.koyeb.app/api/query?q=${query}`);
-      const fetchedMovies = response.data.map(movie => ({
-        title: movie.title,
-        description: movie.description
+      const fetchedMovies = response.data.map(item => ({
+        title: item.movie.title,
+        description: item.movie.description,
+        avgscore: item.movie.avg_score,
+        year: item.movie.year,
+        uri: item.movie.movie_uri
       }));
-      setMovies(fetchedMovies);
+
+      if (fetchedMovies.length === 0) {
+        setMovies([]);
+        setError('');
+      } else {
+        setMovies(fetchedMovies);
+      }
+
     } catch (err) {
       setError('Failed to fetch data');
     }
 
     setLoading(false);
+  };
+
+  const debouncedFetchMovies = useCallback(debounce(fetchMovies, 500), []);
+
+  const handleChange = (event) => {
+    const query = event.target.value;
+    setSearchTerm(query);
+    debouncedFetchMovies(query);
   };
 
   return (
@@ -50,6 +66,7 @@ const WordSearch = () => {
       </div>
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
+      {movies.length === 0 && !loading && !error && <p>No results found</p>}
       <WordList movies={movies} />
     </div>
   );
