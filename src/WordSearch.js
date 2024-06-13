@@ -44,6 +44,7 @@ const WordSearch = () => {
     setLoading(false);
   };
 
+  // eslint-disable-next-line
   const debouncedFetchMovies = useCallback(debounce(fetchMovies, 500), []);
 
   const handleChange = (event) => {

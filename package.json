@@ -1,5 +1,6 @@
 {
   "name": "buscador",
+  "homepage": "https://stephany-c.github.io/buscador-de-filmes/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
