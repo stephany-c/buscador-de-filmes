@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
 import axios from 'axios';
-import { debounce } from 'lodash';
 import WordList from './WordList';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
@@ -44,12 +43,14 @@ const WordSearch = () => {
     setLoading(false);
   };
 
-  const debouncedFetchMovies = useCallback(debounce(fetchMovies, 500), []);
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      fetchMovies(searchTerm);
+    }
+  };
 
   const handleChange = (event) => {
-    const query = event.target.value;
-    setSearchTerm(query);
-    debouncedFetchMovies(query);
+    setSearchTerm(event.target.value);
   };
 
   return (
@@ -62,6 +63,7 @@ const WordSearch = () => {
           placeholder="Search movies..."
           value={searchTerm}
           onChange={handleChange}
+          onKeyDown={handleKeyDown}
         />
       </div>
       {loading && <p>Loading...</p>}
